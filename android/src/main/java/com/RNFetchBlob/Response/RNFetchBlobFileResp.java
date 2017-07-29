@@ -47,8 +47,8 @@ public class RNFetchBlobFileResp extends ResponseBody {
             mPath = path;
             File f = new File(path);
 
-            File parent = f.getParentFile();
-            if(!parent.exists() && !parent.mkdirs()){
+            File parent = f == null ? null : f.getParentFile();
+            if(parent == null || (!parent.exists() && !parent.mkdirs())){
                 throw new IllegalStateException("Couldn't create dir: " + parent);
             }
 
