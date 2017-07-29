@@ -69,6 +69,10 @@ public class RNFetchBlobFS {
         try {
             int written = 0;
             File f = new File(path);
+            if(f == null || !f.exists()){
+                promise.reject("RNfetchBlob writeFileError", "file not exists");
+                return ;
+            }
             File dir = f.getParentFile();
             if(!dir.exists())
                 dir.mkdirs();
@@ -115,6 +119,10 @@ public class RNFetchBlobFS {
         try {
 
             File f = new File(path);
+            if(f == null || !f.exists()){
+                promise.reject("RNfetchBlob writeFileError", "file not exists");
+                return ;
+            }
             File dir = f.getParentFile();
             if(!dir.exists())
                 dir.mkdirs();
@@ -203,7 +211,9 @@ public class RNFetchBlobFS {
         state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             res.put("SDCardDir", Environment.getExternalStorageDirectory().getAbsolutePath());
-            res.put("SDCardApplicationDir", ctx.getExternalFilesDir(null).getParentFile().getAbsolutePath());
+            if(ctx != null && ctx.getExternalFilesDir(null) != null){
+                res.put("SDCardApplicationDir", ctx.getExternalFilesDir(null).getParentFile().getAbsolutePath());
+            }
         }
         res.put("MainBundleDir", ctx.getApplicationInfo().dataDir);
         return res;
